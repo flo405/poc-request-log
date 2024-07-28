@@ -37,6 +37,10 @@ def admin():
             logs = [json.loads(line) for line in f]
     return jsonify(logs)
 
+@app.route('/api/v1/fleet/sso/callback')
+def callback():
+    return f"Error"
+    
 @app.route('/')
 def index_html():
     return send_from_directory('', 'index.html')
