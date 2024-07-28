@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import json
 import os
 
@@ -14,15 +14,17 @@ if not os.path.exists(LOG_DIR):
 
 @app.before_request
 def log_request():
-    if request.endpoint != 'admin':
+    if request.endpoint != 'admin' and request.endpoint != 'index_html':
         # Record the request data
+        token = request.headers.get('Authorization')  # Get the token from the Authorization header
         req_data = {
             'method': request.method,
             'path': request.path,
             'headers': dict(request.headers),
             'args': request.args.to_dict(),
             'form': request.form.to_dict(),
-            'json': request.get_json() if request.is_json else None
+            'json': request.get_json() if request.is_json else None,
+            'token': token  # Log the token
         }
         # Append the request data to the log file
         with open(LOG_FILE, 'a') as f:
@@ -38,8 +40,8 @@ def admin():
     return jsonify(logs)
 
 @app.route('/')
-def index():
-    return "Welcome! Your request is being recorded."
+def index_html():
+    return send_from_directory('', 'index.html')
 
 @app.route('/example')
 def example():
