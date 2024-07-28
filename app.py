@@ -43,9 +43,10 @@ def admin():
 def index_html():
     return send_from_directory('', 'index.html')
 
-@app.route('/example')
+@app.route('/example', methods=['POST'])
 def example():
-    return "This is an example endpoint. Your request is being recorded."
+    local_storage_data = request.get_json()
+    return f"Received local storage data: {json.dumps(local_storage_data)}"
 
 if __name__ == '__main__':
     app.run(debug=True)
