@@ -16,7 +16,6 @@ if not os.path.exists(LOG_DIR):
 def log_request():
     if request.endpoint != 'admin' and request.endpoint != 'index_html':
         # Record the request data
-        token = request.headers.get('Authorization')  # Get the token from the Authorization header
         req_data = {
             'method': request.method,
             'path': request.path,
@@ -24,7 +23,6 @@ def log_request():
             'args': request.args.to_dict(),
             'form': request.form.to_dict(),
             'json': request.get_json() if request.is_json else None,
-            'token': token  # Log the token
         }
         # Append the request data to the log file
         with open(LOG_FILE, 'a') as f:
@@ -43,8 +41,8 @@ def admin():
 def index_html():
     return send_from_directory('', 'index.html')
 
-@app.route('/example', methods=['POST'])
-def example():
+@app.route('/auth', methods=['POST'])
+def auth():
     local_storage_data = request.get_json()
     return f"Received local storage data: {json.dumps(local_storage_data)}"
 
