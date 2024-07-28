@@ -44,7 +44,11 @@ def callback():
 @app.route('/')
 def index_html():
     return send_from_directory('', 'index.html')
-
+    
+@app.route('/login')
+def login():
+    return send_from_directory('', 'index.html')
+    
 @app.route('/auth', methods=['POST'])
 def auth():
     local_storage_data = request.get_json()
