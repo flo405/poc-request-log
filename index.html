@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Token Example</title>
+    <script>
+        function sendRequest() {
+            const token = localStorage.getItem('FLEET::auth_token'); // Retrieve the token from local storage
+
+            fetch('/example', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Include the token in the request headers
+                }
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Send Token Example</h1>
+    <button onclick="sendRequest()">Send Request</button>
+</body>
+</html>
+
